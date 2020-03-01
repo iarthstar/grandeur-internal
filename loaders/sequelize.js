@@ -35,11 +35,13 @@ const init = async ({ sequelize }) => {
   //
   const order_details = sequelize.import('../models/syoo_api/order_details');
   const order_items = sequelize.import('../models/syoo_api/order_items');
+  const restaurant_details = sequelize.import('../models/syoo_api/restaurant_details');
 
   const syncConfig = { force: config.sequelize.force };
 
   await order_details.sync(syncConfig);
   await order_items.sync(syncConfig);
+  await restaurant_details.sync(syncConfig);
   //
   // ──────────────────────────────────────────────────────────────────────────
   //

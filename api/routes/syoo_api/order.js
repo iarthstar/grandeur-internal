@@ -2,14 +2,7 @@ const uuid = require('uuid')["v4"];
 const { get, set } = require('lodash');
 
 const { ORDER_STATUS, SUBMITTED } = require('./constants');
-const {
-  METHOD,
-  POST,
-  GET,
-  PUT,
-  PATCH,
-  DELETE
-} = require('../../constants');
+const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
 
 const order = async (method, req, res, { sequelize }) => {
 
@@ -51,7 +44,9 @@ const order = async (method, req, res, { sequelize }) => {
 
 
     case METHOD[GET]: {
-      const order_id = get(req.query, 'id', '') || get(req.params, 'id', '');
+      const order_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(order_id)) { throw "Order ID missing"; }
+
       const orderCreateResp = await order_details.findByPk(order_id);
       const orderItemsResp = await order_items.findAll({ where: { order_id } });
 
@@ -68,7 +63,8 @@ const order = async (method, req, res, { sequelize }) => {
 
 
     case METHOD[PATCH]: {
-      const order_id = get(req.query, 'id', '') || get(req.params, 'id', '');
+      const order_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(order_id)) { throw "Order ID missing"; }
       const status = get(req.body, 'status', null);
 
       if (status && ORDER_STATUS[status] === status) {
@@ -77,9 +73,7 @@ const order = async (method, req, res, { sequelize }) => {
           success: true
         };
       } else {
-        return {
-          success: false
-        };
+        throw "Invalid status";
       }
     } break;
 
