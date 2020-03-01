@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { get } = require('lodash');
 const {
   METHOD,
@@ -10,9 +11,14 @@ const {
 
 const orders = async (method, req, res, { sequelize }) => {
 
+  const {
+    order_details,
+    order_items
+  } = sequelize.models;
+
   switch (method) {
 
-    case METHOD[POST]: break;
+    case METHOD[POST]: return ({}); break;
 
 
 
@@ -20,40 +26,34 @@ const orders = async (method, req, res, { sequelize }) => {
     case METHOD[GET]: {
       const restaurant_id = get(req.query, 'id', '') || get(req.params, 'id', '');
 
-      const joinedResp = await sequelize.query(`SELECT *
-      FROM order_details
-      FULL OUTER JOIN order_items
-      ON order_details.order_id = order_items.order_id
-      WHERE order_details.restaurant_id='${restaurant_id}'
-      LIMIT 10;`);
+      const orderDetailsResp = await order_details.findAll({ where: { restaurant_id }, limit: 10 });
 
-      let data = {};
-
-      get(joinedResp, '0', []).map(item => {
-        if (data.hasOwnProperty(item.order_id)) {
-          data[item.order_id].push(item);
-        } else {
-          data[item.order_id] = [item];
-        }
+      const data = {};
+      const orderIds = [];
+      
+      orderDetailsResp.forEach(o => {
+        const order = get(o, 'dataValues', {});
+        data[order.order_id] = { ...order, order_items: [] };
+        orderIds.push(order.order_id);
       });
 
-      data = Object.keys(data).map(key => ({
-        order_id: key,
-        restaurant_id: restaurant_id,
-        table_id: data[key][0].table_id,
-        order_items: data[key].map(({ item_name, item_id, item_quantity }) => ({ item_name, item_id, item_quantity }))
-      }));
+      const orderItemsResp = await order_items.findAll({ where: { order_id: { [Op.or]: orderIds } } });
+
+      orderItemsResp.forEach(i => {
+        const { order_id, item_name, item_id, item_quantity } = get(i, 'dataValues', {});
+        data[order_id].order_items.push({ item_name, item_id, item_quantity });
+      });
 
       return {
         success: true,
-        data
+        data: Object.values(data)
       };
     } break;
 
 
 
 
-    default: { }
+    default: return ({});
   };
 };
 
