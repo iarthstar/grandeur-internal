@@ -42,6 +42,7 @@ module.exports = ({ sequelize }) => {
   GET______`/syoo_api/order/:id                                               ${syoo_api.order}`
   PATCH____`/syoo_api/order/:id                                               ${syoo_api.order}`
 
+  GET______`/syoo_api/orders                                                  ${syoo_api.orders}`
   GET______`/syoo_api/orders/:id                                              ${syoo_api.orders}`
 
   //
