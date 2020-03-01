@@ -20,7 +20,7 @@ const perform = (method, func) => async (req, res) => {
     res.send(ret);
   } catch (err) {
     utils.error(err);
-    return res.json({ error: true, error_message: "Something went wrong..." }).status(500);
+    return res.json({ error: true, error_message: String(err) || "Something went wrong..." }).status(500);
   }
 }
 

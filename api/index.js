@@ -29,21 +29,28 @@ module.exports = ({ sequelize }) => {
   //
 
   // ReqRes APIs
-  MIDDLE___`/req_res/users                                                    ${middleware.basicAuth}`
-  POST_____`/req_res/users                                                    ${req_res.users}`
-  GET______`/req_res/users/:id                                                ${req_res.users}`
-  PUT______`/req_res/users/:id                                                ${req_res.users}`
-  DELETE___`/req_res/users/:id                                                ${req_res.users}`
+  MIDDLE___`/req_res/users                              ${middleware.basicAuth}`
+  POST_____`/req_res/users                              ${req_res.users}`
+  GET______`/req_res/users/:id                          ${req_res.users}`
+  PUT______`/req_res/users/:id                          ${req_res.users}`
+  DELETE___`/req_res/users/:id                          ${req_res.users}`
 
 
   // SYOO APIs
-  POST_____`/syoo_api/order                                                   ${syoo_api.order}`
-  GET______`/syoo_api/order                                                   ${syoo_api.order}`
-  GET______`/syoo_api/order/:id                                               ${syoo_api.order}`
-  PATCH____`/syoo_api/order/:id                                               ${syoo_api.order}`
+  POST_____`/syoo_api/restaurant                        ${syoo_api.restaurant}`
+  GET______`/syoo_api/restaurant                        ${syoo_api.restaurant}`
+  GET______`/syoo_api/restaurant/:id                    ${syoo_api.restaurant}`
+  PUT______`/syoo_api/restaurant                        ${syoo_api.restaurant}`
+  PUT______`/syoo_api/restaurant/:id                    ${syoo_api.restaurant}`
+  
+  POST_____`/syoo_api/order                             ${syoo_api.order}`
+  GET______`/syoo_api/order                             ${syoo_api.order}`
+  GET______`/syoo_api/order/:id                         ${syoo_api.order}`
+  PATCH____`/syoo_api/order                             ${syoo_api.order}`
+  PATCH____`/syoo_api/order/:id                         ${syoo_api.order}`
 
-  GET______`/syoo_api/orders                                                  ${syoo_api.orders}`
-  GET______`/syoo_api/orders/:id                                              ${syoo_api.orders}`
+  GET______`/syoo_api/orders                            ${syoo_api.orders}`
+  GET______`/syoo_api/orders/:id                        ${syoo_api.orders}`
 
   //
   // ─────────────────────────────────────────────────────────────────────────

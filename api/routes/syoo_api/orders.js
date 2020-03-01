@@ -1,13 +1,6 @@
 const { Op } = require('sequelize');
 const { get } = require('lodash');
-const {
-  METHOD,
-  POST,
-  GET,
-  PUT,
-  PATCH,
-  DELETE
-} = require('../../constants');
+const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
 
 const orders = async (method, req, res, { sequelize }) => {
 
@@ -30,7 +23,7 @@ const orders = async (method, req, res, { sequelize }) => {
 
       const data = {};
       const orderIds = [];
-      
+
       orderDetailsResp.forEach(o => {
         const order = get(o, 'dataValues', {});
         data[order.order_id] = { ...order, order_items: [] };
