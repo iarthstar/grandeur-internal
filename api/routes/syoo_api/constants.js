@@ -1,0 +1,19 @@
+const SUBMITTED = "SUBMITTED";
+const CONFIRMED = "CONFIRMED";
+const COOKING = "COOKING";
+const READY = "READY";
+
+const ORDER_STATUS = {
+  SUBMITTED,
+  CONFIRMED,
+  COOKING,
+  READY
+};
+
+module.exports = {
+  ORDER_STATUS,
+  SUBMITTED,
+  CONFIRMED,
+  COOKING,
+  READY
+};
