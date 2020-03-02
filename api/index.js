@@ -25,10 +25,12 @@ module.exports = ({ sequelize }) => {
   initializeRoute(route, sequelize);
 
   //
-  // ────────────────────────────────────────────────────────── ROUTES ───────
+  // ─────────────────────────────────────────────────────────── ROUTES ───────
   //
 
-  // ReqRes APIs
+  /*------------------- REQRES APIs -------------------*/
+
+  // ReqRes CRUD
   MIDDLE___`/req_res/users                              ${middleware.basicAuth}`
   POST_____`/req_res/users                              ${req_res.users}`
   GET______`/req_res/users/:id                          ${req_res.users}`
@@ -36,24 +38,38 @@ module.exports = ({ sequelize }) => {
   DELETE___`/req_res/users/:id                          ${req_res.users}`
 
 
-  // SYOO APIs
+
+
+
+  /*-------------------- SYOO APIs --------------------*/
+
+  // Restaurant CRUD
   POST_____`/syoo_api/restaurant                        ${syoo_api.restaurant}`
   GET______`/syoo_api/restaurant                        ${syoo_api.restaurant}`
   GET______`/syoo_api/restaurant/:id                    ${syoo_api.restaurant}`
   PUT______`/syoo_api/restaurant                        ${syoo_api.restaurant}`
   PUT______`/syoo_api/restaurant/:id                    ${syoo_api.restaurant}`
   
+  // Item CRUD
+  POST_____`/syoo_api/item                              ${syoo_api.item}`
+  GET______`/syoo_api/item                              ${syoo_api.item}`
+  GET______`/syoo_api/item/:id                          ${syoo_api.item}`
+  PUT______`/syoo_api/item                              ${syoo_api.item}`
+  PUT______`/syoo_api/item/:id                          ${syoo_api.item}`
+  
+  // Order CRUD
   POST_____`/syoo_api/order                             ${syoo_api.order}`
   GET______`/syoo_api/order                             ${syoo_api.order}`
   GET______`/syoo_api/order/:id                         ${syoo_api.order}`
   PATCH____`/syoo_api/order                             ${syoo_api.order}`
   PATCH____`/syoo_api/order/:id                         ${syoo_api.order}`
-
+  
+  // Orders
   GET______`/syoo_api/orders                            ${syoo_api.orders}`
   GET______`/syoo_api/orders/:id                        ${syoo_api.orders}`
 
   //
-  // ─────────────────────────────────────────────────────────────────────────
+  // ──────────────────────────────────────────────────────────────────────────
   //
 
 
