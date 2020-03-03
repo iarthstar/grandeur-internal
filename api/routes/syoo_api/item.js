@@ -2,12 +2,13 @@ const uuid = require('uuid')["v4"];
 const { Op } = require('sequelize');
 const { get } = require('lodash');
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
+const G = require('../../../global');
 
-const item = async (method, req, res, { sequelize }) => {
+const item = async (method, req, res) => {
 
   const {
     item_details
-  } = sequelize.models;
+  } = G.SEQUELIZE.models;
 
   switch (method) {
 
@@ -38,8 +39,10 @@ const item = async (method, req, res, { sequelize }) => {
 
 
     case METHOD[PUT]: {
+      const item_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(item_id)) { throw "Item ID missing"; }
+
       const newItemDetails = { ...req.body };
-      const { item_id } = newItemDetails;
 
       delete newItemDetails.item_id;
       delete newItemDetails.updatedAt;
@@ -47,7 +50,7 @@ const item = async (method, req, res, { sequelize }) => {
 
       return {
         success: true,
-        data: await item_details.update({ ...newItemDetails }, { where: { item_id } })
+        data: await item_details.update(newItemDetails, { where: { item_id } })
       }
     }; break;
 

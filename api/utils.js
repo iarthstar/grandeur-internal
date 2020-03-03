@@ -1,22 +1,13 @@
 const utils = require("../utils");
-const {
-  METHOD,
-  POST,
-  GET,
-  PUT,
-  PATCH,
-  DELETE
-} = require('./constants');
-
-let route = {};
-let sequelize = {};
+const G = require('../global');
+const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('./constants');
 
 const perform = (method, func) => async (req, res) => {
   const { url, method: met, body } = req;
   utils.info(met, url);
   utils.log(body);
   try {
-    const ret = await func(method, req, res, { sequelize });
+    const ret = await func(method, req, res);
     res.send(ret);
   } catch (err) {
     utils.error(err);
@@ -27,22 +18,22 @@ const perform = (method, func) => async (req, res) => {
 const oneMoreRoute = (method, path, func) => {
   switch (method) {
     case METHOD[GET]:
-      route.get(path, perform(method, func)); break;
+      G.ROUTE.get(path, perform(method, func)); break;
 
     case METHOD[POST]:
-      route.post(path, perform(method, func)); break;
+      G.ROUTE.post(path, perform(method, func)); break;
 
     case METHOD[PUT]:
-      route.put(path, perform(method, func)); break;
+      G.ROUTE.put(path, perform(method, func)); break;
 
     case METHOD[PATCH]:
-      route.patch(path, perform(method, func)); break;
+      G.ROUTE.patch(path, perform(method, func)); break;
 
     case METHOD[DELETE]:
-      route.delete(path, perform(method, func)); break;
+      G.ROUTE.delete(path, perform(method, func)); break;
 
-    case "middle":
-      route.use(path, (req, res, next) => {
+    case "MIDDLE":
+      G.ROUTE.use(path, (req, res, next) => {
         try {
           func(method, req, res, next)
         } catch (err) {
@@ -55,13 +46,7 @@ const oneMoreRoute = (method, path, func) => {
   }
 };
 
-const initializeRoute = (rt, sq) => {
-  route = rt;
-  sequelize = sq;
-};
-
 module.exports = {
-  initializeRoute,
   MIDDLE___: (str, eval) => oneMoreRoute('MIDDLE', str[0].trim(), eval),
   POST_____: (str, eval) => oneMoreRoute(METHOD[POST], str[0].trim(), eval),
   GET______: (str, eval) => oneMoreRoute(METHOD[GET], str[0].trim(), eval),
