@@ -24,14 +24,14 @@ module.exports = {
     },
     "prod": {
       POSTGRESQL: {
-        "uri": process.env.DB_POSTGRESQL_URI,
-        "database": process.env.DB_POSTGRESQL_DATABASE,
-        "username": process.env.DB_POSTGRESQL_USERNAME,
-        "password": process.env.DB_POSTGRESQL_PASSWORD,
-        "host": process.env.DB_POSTGRESQL_HOST
+        "uri": process.env.DATABASE_URL,
+        "database": process.env.DB_DATABASE,
+        "username": process.env.DB_USERNAME,
+        "password": process.env.DB_PASSWORD,
+        "host": process.env.DB_HOST
       },
       REDIS: {
-        "uri": process.env.DB_REDIS_URI
+        "uri": process.env.REDIS_URL
       }
     }
   },

@@ -11,9 +11,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const routes = require('../api');
 const config = require('../config');
-const utils = require('../utils');
 const G = require('../global');
 
 module.exports = async () => {

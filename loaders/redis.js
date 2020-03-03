@@ -10,7 +10,6 @@
 // modules import
 const Redis = require("ioredis");
 
-const utils = require('../utils');
 const config = require('../config');
 const G = require('../global');
 

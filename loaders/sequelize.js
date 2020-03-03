@@ -8,9 +8,9 @@
 
 
 // modules import
-const utils = require('../utils');
-const config = require('../config');
 const Sequelize = require('sequelize');
+
+const config = require('../config');
 const G = require('../global');
 
 const models = require('../models');
