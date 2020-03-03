@@ -14,16 +14,25 @@ module.exports = {
   },
   database: {
     "dev": {
-      "database": "postgres",
-      "username": "postgres",
-      "password": "1234",
-      "host": "localhost"
+      POSTGRESQL: {
+        "database": "postgres",
+        "username": "postgres",
+        "password": "1234",
+        "host": "localhost"
+      },
+      REDIS: {}
     },
     "prod": {
-      "database": process.env.DB_DATABASE,
-      "username": process.env.DB_USERNAME,
-      "password": process.env.DB_PASSWORD,
-      "host": process.env.DB_HOST
+      POSTGRESQL: {
+        "uri": process.env.DATABASE_URL,
+        "database": process.env.DB_DATABASE,
+        "username": process.env.DB_USERNAME,
+        "password": process.env.DB_PASSWORD,
+        "host": process.env.DB_HOST
+      },
+      REDIS: {
+        "uri": process.env.REDIS_URL
+      }
     }
   },
   api: {

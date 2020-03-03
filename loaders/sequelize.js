@@ -8,9 +8,9 @@
 
 
 // modules import
-const utils = require('../utils');
-const config = require('../config');
 const Sequelize = require('sequelize');
+
+const config = require('../config');
 const G = require('../global');
 
 const models = require('../models');
@@ -18,7 +18,7 @@ const models = require('../models');
 module.exports = async () => {
 
   const { database: db, environment: env } = config;
-  const { database, username, password, host } = db[env];
+  const { database, username, password, host } = db[env].POSTGRESQL;
 
   G.SEQUELIZE = new Sequelize(database, username, password, {
     dialect: 'postgres',
