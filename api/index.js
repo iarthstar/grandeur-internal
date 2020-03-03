@@ -10,19 +10,18 @@
 
 // modules import
 const { Router } = require('express');
+const G = require('../global');
 
-const { MIDDLE___, POST_____, GET______, PUT______, PATCH____, DELETE___, initializeRoute } = require('./utils');
+const { MIDDLE___, POST_____, GET______, PUT______, PATCH____, DELETE___ } = require('./utils');
 
 const middleware = require('./middlewares');
 
 const req_res = require('./routes/req_res');
 const syoo_api = require('./routes/syoo_api');
 
-module.exports = ({ sequelize }) => {
+module.exports = () => {
 
-  const route = Router();
-
-  initializeRoute(route, sequelize);
+  G.ROUTE = Router();
 
   //
   // ─────────────────────────────────────────────────────────── ROUTES ───────
@@ -73,5 +72,5 @@ module.exports = ({ sequelize }) => {
   //
 
 
-  return route;
+  return G.ROUTE;
 };

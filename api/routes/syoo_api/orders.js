@@ -1,13 +1,14 @@
 const { Op } = require('sequelize');
 const { get } = require('lodash');
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
+const G = require('../../../global');
 
-const orders = async (method, req, res, { sequelize }) => {
+const orders = async (method, req, res) => {
 
   const {
     order_details,
     order_items
-  } = sequelize.models;
+  } = G.SEQUELIZE.models;
 
   switch (method) {
 

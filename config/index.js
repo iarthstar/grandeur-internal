@@ -5,7 +5,9 @@ dotenv.config();
 module.exports = {
   environment: process.env.CURRENT_ENV || "dev",
   sequelize: {
-    force: process.env.SEQUELIZE_FORCE || false
+    sync: {
+      force: process.env.SEQUELIZE_FORCE || false
+    }
   },
   server: {
     PORT: process.env.PORT || 8080,
@@ -27,4 +29,4 @@ module.exports = {
   api: {
     prefix: ""
   }
-}
+};

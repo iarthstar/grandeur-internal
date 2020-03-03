@@ -12,11 +12,12 @@ const utils = require('../utils');
 const expressLoader = require('./express');
 const sequelizeLoader = require('./sequelize');
 
-exports.init = async ({ expressApp, sequelize }) => {
+module.exports = async () => {
 
-  const sq = await sequelizeLoader.init({ sequelize });
+  await sequelizeLoader();
   utils.success('Sequelize Intialized');
-  await expressLoader.init({ app: expressApp, sequelize: sq });
+  
+  await expressLoader();
   utils.success('Express Intialized');
 
 };

@@ -19,21 +19,15 @@ utils.initApp();
 // modules import
 const config = require('./config');
 const loaders = require('./loaders');
-const express = require('express');
+const G = require('./global');
 
 const startServer = async () => {
 
-  let sequelize = {};
-  const app = express();
+  await loaders();
 
-  await loaders.init({ expressApp: app, sequelize });
-
-  app.listen(config.server.PORT, err => {
-    if (err) {
-      utils.log(err);
-      return;
-    }
-    utils.success(`Server is running on -> http://localhost:${config.server.PORT}`);
+  G.EXPRESS_APP.listen(config.server.PORT, err => {
+    if (err) utils.log(err);
+    else utils.info('Server', `http://localhost:${config.server.PORT}`);
   });
 };
 

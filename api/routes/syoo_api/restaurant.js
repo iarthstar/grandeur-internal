@@ -2,12 +2,13 @@ const uuid = require('uuid')["v4"];
 const { Op } = require('sequelize');
 const { get } = require('lodash');
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
+const G = require('../../../global');
 
-const restaurant = async (method, req, res, { sequelize }) => {
+const restaurant = async (method, req, res) => {
 
   const {
     restaurant_details
-  } = sequelize.models;
+  } = G.SEQUELIZE.models;
 
   switch (method) {
 
@@ -38,8 +39,10 @@ const restaurant = async (method, req, res, { sequelize }) => {
 
 
     case METHOD[PUT]: {
+      const restaurant_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(restaurant_id)) { throw "Restaurant ID missing"; }
+
       const newRestaurantDetails = { ...req.body };
-      const { restaurant_id } = newRestaurantDetails;
 
       delete newRestaurantDetails.restaurant_id;
       delete newRestaurantDetails.updatedAt;
@@ -47,7 +50,7 @@ const restaurant = async (method, req, res, { sequelize }) => {
 
       return {
         success: true,
-        data: await restaurant_details.update({ ...newRestaurantDetails }, { where: { restaurant_id } })
+        data: await restaurant_details.update(newRestaurantDetails, { where: { restaurant_id } })
       }
     }; break;
 
