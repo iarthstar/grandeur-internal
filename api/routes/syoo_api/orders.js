@@ -20,6 +20,9 @@ const orders = async (method, req, res) => {
     case METHOD[GET]: {
       const restaurant_id = get(req.query, 'id', '') || get(req.params, 'id', '');
 
+      let ret = await G.REDIS.get(`SYOO_API:ORDERS:${restaurant_id}`);
+      if (ret) return JSON.parse(ret);
+
       const orderDetailsResp = await order_details.findAll({ where: { restaurant_id }, limit: 10 });
 
       const data = {};
@@ -38,10 +41,14 @@ const orders = async (method, req, res) => {
         data[order_id].order_items.push({ item_name, item_id, item_quantity });
       });
 
-      return {
+      ret = {
         success: true,
         data: Object.values(data)
       };
+
+      await G.REDIS.set(`SYOO_API:ORDERS:${restaurant_id}`, JSON.stringify(ret), "EX", 5 * 60);
+
+      return ret;
     } break;
 
 
