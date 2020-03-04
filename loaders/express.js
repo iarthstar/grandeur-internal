@@ -11,6 +11,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const routes = require('../api');
 const config = require('../config');
@@ -26,6 +27,7 @@ module.exports = async () => {
   G.EXPRESS_APP.enable('trust proxy');
 
   G.EXPRESS_APP.use(cors());
+  G.EXPRESS_APP.use(helmet());
 
   G.EXPRESS_APP.use(bodyParser.json());
   G.EXPRESS_APP.use(bodyParser.urlencoded({ extended: false }));
