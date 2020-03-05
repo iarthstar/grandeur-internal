@@ -49,13 +49,20 @@ module.exports = () => {
   PUT______`/syoo_api/restaurant                        ${syoo_api.restaurant}`
   PUT______`/syoo_api/restaurant/:id                    ${syoo_api.restaurant}`
   
+  // Restaurants
+  GET______`/syoo_api/restaurants                       ${syoo_api.restaurants}`
+
   // Item CRUD
   POST_____`/syoo_api/item                              ${syoo_api.item}`
   GET______`/syoo_api/item                              ${syoo_api.item}`
   GET______`/syoo_api/item/:id                          ${syoo_api.item}`
   PUT______`/syoo_api/item                              ${syoo_api.item}`
   PUT______`/syoo_api/item/:id                          ${syoo_api.item}`
-  
+
+  // Items
+  GET______`/syoo_api/items                             ${syoo_api.items}`
+  GET______`/syoo_api/items/:id                         ${syoo_api.items}`
+
   // Order CRUD
   POST_____`/syoo_api/order                             ${syoo_api.order}`
   GET______`/syoo_api/order                             ${syoo_api.order}`

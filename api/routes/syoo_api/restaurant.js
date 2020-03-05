@@ -15,7 +15,9 @@ const restaurant = async (method, req, res) => {
     case METHOD[POST]: {
 
       const restaurantDetails = { ...req.body };
-
+      
+      await G.REDIS.del(`SYOO_API:RESTAURANTS`);
+      
       return {
         success: true,
         data: await restaurant_details.create({ ...restaurantDetails, restaurant_id: uuid() })
@@ -47,6 +49,8 @@ const restaurant = async (method, req, res) => {
       delete newRestaurantDetails.restaurant_id;
       delete newRestaurantDetails.updatedAt;
       delete newRestaurantDetails.createdAt;
+
+      await G.REDIS.del(`SYOO_API:RESTAURANTS`);
 
       return {
         success: true,
