@@ -16,6 +16,8 @@ const item = async (method, req, res) => {
 
       const itemDetails = { ...req.body };
 
+      await G.REDIS.del(`SYOO_API:ITEMS:${itemDetails.restaurant_id}`);
+
       return {
         success: true,
         data: await item_details.create({ ...itemDetails, item_id: uuid() })
@@ -47,6 +49,8 @@ const item = async (method, req, res) => {
       delete newItemDetails.item_id;
       delete newItemDetails.updatedAt;
       delete newItemDetails.createdAt;
+
+      await G.REDIS.del(`SYOO_API:ITEMS:${newItemDetails.restaurant_id}`);
 
       return {
         success: true,
