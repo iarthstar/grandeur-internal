@@ -29,6 +29,19 @@ const order = async (method, req, res) => {
         status: ORDER_STATUS[SUBMITTED]
       };
 
+      const REDIS_ORDERS_COUNT = `SYOO:ORDERS:COUNT:${restaurant_id}`;
+
+      let ordersCount = await G.REDIS.get(REDIS_ORDERS_COUNT);
+      if (ordersCount) {
+        ordersCount = Number(ordersCount) + 1;
+        await G.REDIS.incr(REDIS_ORDERS_COUNT);
+      } else {
+        ordersCount = await order_details.count({ where: { restaurant_id } }) + 1;
+        await G.REDIS.set(REDIS_ORDERS_COUNT, String(ordersCount), "EX", 24 * 60 * 60);
+      }
+
+      orderDetails.order_no = ordersCount;
+
       const orderItemsResp = await order_items.bulkCreate(order.map(i => set(i, 'order_id', order_id)));
       const orderCreateResp = await order_details.create(orderDetails);
 
@@ -76,6 +89,34 @@ const order = async (method, req, res) => {
       } else {
         throw "Invalid status";
       }
+    } break;
+
+
+
+
+    case METHOD[PUT]: {
+      const order_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(order_id)) { throw "Order ID missing"; }
+
+      const {
+        order_items: order
+      } = req.body;
+
+      for (item of order) {
+        const { item_id } = item;
+
+        delete item.item_id;
+        delete item.updatedAt;
+        delete item.createdAt;
+
+        await order_items.update({ ...item }, { where: { order_id, item_id } });
+      }
+
+      return {
+        success: true,
+        data: {}
+      };
+
     } break;
 
 

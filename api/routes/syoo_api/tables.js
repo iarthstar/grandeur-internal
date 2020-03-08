@@ -4,10 +4,10 @@ const utils = require("../../../utils");
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
 const G = require('../../../global');
 
-const items = async (method, req, res) => {
+const tables = async (method, req, res) => {
 
   const {
-    item_details
+    table_details
   } = G.SEQUELIZE.models;
 
   switch (method) {
@@ -19,11 +19,11 @@ const items = async (method, req, res) => {
       // let ret = await G.REDIS.get(REDIS_KEY);
       // if (ret) { utils.info("CACHED", REDIS_KEY); return JSON.parse(ret); }
 
-      const items = await item_details.findAll({ where: { restaurant_id } });
+      const tables = await table_details.findAll({ where: { restaurant_id } });
 
       ret = {
         success: true,
-        data: items.map(r => get(r, 'dataValues', {}))
+        data: tables.map(r => get(r, 'dataValues', {}))
       };
 
       // await G.REDIS.set(REDIS_KEY, JSON.stringify(ret), "EX", 10 * 60);
@@ -39,5 +39,5 @@ const items = async (method, req, res) => {
 };
 
 module.exports = {
-  items
+  tables
 };
