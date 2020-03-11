@@ -23,7 +23,13 @@ const orders = async (method, req, res) => {
       // let ret = await G.REDIS.get(`SYOO_API:ORDERS:${restaurant_id}`);
       // if (ret) return JSON.parse(ret);
 
-      const orderDetailsResp = await order_details.findAll({ where: { restaurant_id }, limit: 10 });
+      const orderDetailsResp = await order_details.findAll({ where: { restaurant_id, status: "SUBMITTED" }, limit: 10 });
+      if(orderDetailsResp.length === 0){
+        return {
+          success: true,
+          data: []
+        };
+      }
 
       const data = {};
       const orderIds = [];
@@ -37,8 +43,8 @@ const orders = async (method, req, res) => {
       const orderItemsResp = await order_items.findAll({ where: { order_id: { [Op.or]: orderIds } } });
 
       orderItemsResp.forEach(i => {
-        const { order_id, item_name, item_id, item_quantity } = get(i, 'dataValues', {});
-        data[order_id].order_items.push({ item_name, item_id, item_quantity });
+        const { order_id, item_name, item_id, item_quantity, item_price } = get(i, 'dataValues', {});
+        data[order_id].order_items.push({ item_name, item_id, item_quantity, item_price });
       });
 
       ret = {

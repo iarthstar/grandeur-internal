@@ -18,6 +18,7 @@ const order = async (method, req, res) => {
       const {
         restaurant_id,
         table_id,
+        table_name,
         order_items: order
       } = req.body;
 
@@ -25,8 +26,9 @@ const order = async (method, req, res) => {
       const orderDetails = {
         restaurant_id,
         table_id,
+        table_name,
         order_id,
-        status: ORDER_STATUS[SUBMITTED]
+        status: ORDER_STATUS[SUBMITTED],
       };
 
       const REDIS_ORDERS_COUNT = `SYOO:ORDERS:COUNT:${restaurant_id}`;
@@ -41,6 +43,7 @@ const order = async (method, req, res) => {
       }
 
       orderDetails.order_no = ordersCount;
+      orderDetails.bill_amount = order.reduce((acc, { item_quantity, item_price }) => ((item_quantity * item_price) + acc), 0);
 
       const orderItemsResp = await order_items.bulkCreate(order.map(i => set(i, 'order_id', order_id)));
       const orderCreateResp = await order_details.create(orderDetails);
@@ -102,15 +105,34 @@ const order = async (method, req, res) => {
         order_items: order
       } = req.body;
 
+      const orderItemsResp = await order_items.findAll({ where: { order_id } });
+      const existingIDs = {};
+      orderItemsResp.forEach((i) => {
+        const { item_id, item_quantity } = get(i, 'dataValues', {})
+        existingIDs[item_id] = item_quantity;
+      });
+
+      const newItems = [];
+
       for (item of order) {
         const { item_id } = item;
 
-        delete item.item_id;
         delete item.updatedAt;
         delete item.createdAt;
 
-        await order_items.update({ ...item }, { where: { order_id, item_id } });
+        if (existingIDs.hasOwnProperty(item_id)) {
+          delete item.item_id;
+          await order_items.update(item, { where: { order_id, item_id } });
+        } else {
+          newItems.push(item);
+        }
       }
+
+      await order_items.bulkCreate(newItems.map(i => set(i, 'order_id', order_id)));
+
+      const bill_amount = order.reduce((acc, { item_quantity, item_price }) => ((item_quantity * item_price) + acc), 0);
+
+      await order_details.update({ bill_amount }, { where: { order_id } });
 
       return {
         success: true,
