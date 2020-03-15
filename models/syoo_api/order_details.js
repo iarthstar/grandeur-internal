@@ -5,6 +5,10 @@ module.exports = (Sequelize, Datatypes) => (
       primaryKey: true,
       allowNull: false
     },
+    order_no: {
+      type: Datatypes.INTEGER,
+      allowNull: false
+    },
     restaurant_id: {
       type: Datatypes.UUID,
       allowNull: false,
@@ -13,8 +17,16 @@ module.exports = (Sequelize, Datatypes) => (
       type: Datatypes.UUID,
       allowNull: false
     },
+    table_name: {
+      type: Datatypes.STRING,
+      allowNull: false
+    },
     status: {
       type: Datatypes.STRING,
+      allowNull: false
+    },
+    bill_amount: {
+      type: Datatypes.INTEGER,
       allowNull: false
     }
   })

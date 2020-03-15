@@ -15,7 +15,8 @@ const sync = async () => {
       "order_details",
       "order_items",
       "restaurant_details",
-      "item_details"
+      "item_details",
+      "table_details"
     ],
   };
 

@@ -13,25 +13,20 @@ module.exports = {
     PORT: process.env.PORT || 8080,
   },
   database: {
-    "dev": {
+    dev: {
       POSTGRESQL: {
-        "database": "postgres",
-        "username": "postgres",
-        "password": "1234",
-        "host": "localhost"
-      },
-      REDIS: {}
-    },
-    "prod": {
-      POSTGRESQL: {
-        "uri": process.env.DATABASE_URL,
-        "database": process.env.DB_DATABASE,
-        "username": process.env.DB_USERNAME,
-        "password": process.env.DB_PASSWORD,
-        "host": process.env.DB_HOST
+        uri: "postgres://postgres:1234@localhost:5432/postgres"
       },
       REDIS: {
-        "uri": process.env.REDIS_URL
+        uri: ""
+      }
+    },
+    prod: {
+      POSTGRESQL: {
+        uri: process.env.DATABASE_URL
+      },
+      REDIS: {
+        uri: process.env.REDIS_URL
       }
     }
   },

@@ -17,14 +17,10 @@ const models = require('../models');
 
 module.exports = async () => {
 
-  const { database: db, environment: env } = config;
-  const { database, username, password, host } = db[env].POSTGRESQL;
+  const { database, environment } = config;
+  const { uri } = database[environment].POSTGRESQL;
 
-  G.SEQUELIZE = new Sequelize(database, username, password, {
-    dialect: 'postgres',
-    host: host,
-    logging: false
-  });
+  G.SEQUELIZE = new Sequelize(uri, { logging: false });
 
   // sequelize psql connection
   await G.SEQUELIZE.authenticate();

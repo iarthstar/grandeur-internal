@@ -16,7 +16,7 @@ const item = async (method, req, res) => {
 
       const itemDetails = { ...req.body };
 
-      await G.REDIS.del(`SYOO_API:ITEMS:${itemDetails.restaurant_id}`);
+      // await G.REDIS.del(`SYOO_API:ITEMS:${itemDetails.restaurant_id}`);
 
       return {
         success: true,
@@ -50,7 +50,7 @@ const item = async (method, req, res) => {
       delete newItemDetails.updatedAt;
       delete newItemDetails.createdAt;
 
-      await G.REDIS.del(`SYOO_API:ITEMS:${newItemDetails.restaurant_id}`);
+      // await G.REDIS.del(`SYOO_API:ITEMS:${newItemDetails.restaurant_id}`);
 
       return {
         success: true,
@@ -58,7 +58,15 @@ const item = async (method, req, res) => {
       }
     }; break;
 
+    case METHOD[DELETE]: {
+      const item_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(item_id)) { throw "Item ID missing"; }
 
+      return {
+        success: true,
+        data: await item_details.destroy({ where: { item_id } })
+      };
+    } break;
 
 
     default: return ({});
