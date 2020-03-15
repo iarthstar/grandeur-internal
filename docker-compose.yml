@@ -1,0 +1,25 @@
+version: '3'
+services:
+  server:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      PSQL_URI: "postgres://postgres:1234@db:5432/postgres"
+      REDIS_URI: "redis://cache:6379/0"
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+
+  cache:
+    image: redis:alpine
+    ports:
+      - 6379:6379
