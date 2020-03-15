@@ -1,6 +1,7 @@
 version: '3'
 services:
   server:
+    restart: always
     build: .
     ports:
       - 8080:8080
@@ -15,6 +16,8 @@ services:
     image: postgres:alpine
     ports:
       - 5432:5432
+    volumes: 
+      - ./local_data/postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: "db"
       POSTGRES_HOST_AUTH_METHOD: "trust"
