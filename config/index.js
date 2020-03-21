@@ -2,6 +2,17 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const DEVELOPMENT = "development";
+const LOCALHOST = "localhost";
+const STAGING = "staging";
+const PRODUCTION = "production";
+
+const Environments = {
+  [LOCALHOST]: LOCALHOST,
+  [DEVELOPMENT]: DEVELOPMENT,
+  [STAGING]: STAGING,
+  [PRODUCTION]: PRODUCTION
+};
 
 const PSQL_USERNAME = process.env.PSQL_USERNAME || "postgres";
 const PSQL_PASSWORD = process.env.PSQL_PASSWORD || "1234";
@@ -19,7 +30,7 @@ const REDIS_PORT = process.env.REDIS_PORT || "6379";
 const REDIS_URI = process.env.REDIS_URI || `redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}/${REDIS_DATABASE}`;
 
 module.exports = {
-  environment: process.env.CURRENT_ENV || "dev",
+  environment: process.env.CURRENT_ENV || Environments[DEVELOPMENT],
   sequelize: {
     sync: {
       force: process.env.SEQUELIZE_FORCE || false
@@ -29,7 +40,7 @@ module.exports = {
     PORT: process.env.PORT || 8080,
   },
   database: {
-    dev: {
+    [LOCALHOST]: {
       POSTGRESQL: {
         uri: PSQL_URI
       },
@@ -37,7 +48,23 @@ module.exports = {
         uri: REDIS_URI
       }
     },
-    prod: {
+    [DEVELOPMENT]: {
+      POSTGRESQL: {
+        uri: process.env.DATABASE_URL
+      },
+      REDIS: {
+        uri: process.env.REDIS_URL
+      }
+    },
+    [STAGING]: {
+      POSTGRESQL: {
+        uri: process.env.DATABASE_URL
+      },
+      REDIS: {
+        uri: process.env.REDIS_URL
+      }
+    },
+    [PRODUCTION]: {
       POSTGRESQL: {
         uri: process.env.DATABASE_URL
       },
