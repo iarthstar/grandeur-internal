@@ -2,12 +2,14 @@ const SUBMITTED = "SUBMITTED";
 const CONFIRMED = "CONFIRMED";
 const COOKING = "COOKING";
 const READY = "READY";
+const BILLED = "BILLED";
 
 const ORDER_STATUS = {
   SUBMITTED,
   CONFIRMED,
   COOKING,
-  READY
+  READY,
+  BILLED
 };
 
 module.exports = {
@@ -15,5 +17,6 @@ module.exports = {
   SUBMITTED,
   CONFIRMED,
   COOKING,
-  READY
+  READY,
+  BILLED
 };

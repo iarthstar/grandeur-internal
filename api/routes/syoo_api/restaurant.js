@@ -16,7 +16,7 @@ const restaurant = async (method, req, res) => {
 
       const restaurantDetails = { ...req.body };
       
-      await G.REDIS.del(`SYOO_API:RESTAURANTS`);
+      // await G.REDIS.del(`SYOO_API:RESTAURANTS`);
       
       return {
         success: true,
@@ -50,13 +50,29 @@ const restaurant = async (method, req, res) => {
       delete newRestaurantDetails.updatedAt;
       delete newRestaurantDetails.createdAt;
 
-      await G.REDIS.del(`SYOO_API:RESTAURANTS`);
+      // await G.REDIS.del(`SYOO_API:RESTAURANTS`);
 
       return {
         success: true,
         data: await restaurant_details.update(newRestaurantDetails, { where: { restaurant_id } })
       }
     }; break;
+
+
+
+
+    case METHOD[DELETE]: {
+      const restaurant_id = get(req.query, 'id') || get(req.params, 'id') || null;
+      if (!Boolean(restaurant_id)) { throw "Restaurant ID missing"; }
+
+      // Todo: Handle delete restaurant better way i.e. Boolean column in table
+
+      return {
+        success: true,
+        data: await restaurant_details.destroy({ where: { restaurant_id } })
+      };
+    } break;
+
 
 
 
